@@ -10,5 +10,7 @@ class SystemConfig:
       'host': os.environ.get('DB_HOST'),
       'db_name': os.environ.get('DB_NAME')
   })
+  SQLALCHEMY_TRACK_MODIFICATIONS = False
+  SQLALCHEMY_ECHO = False
 
 Config = SystemConfig

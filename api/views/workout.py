@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
-from ..models import Workout, WorkoutSchema
+from models import Workout, WorkoutSchema
 import json
 
 # ルーティング設定
