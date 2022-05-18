@@ -1,8 +1,10 @@
 from flask import Flask, make_response, jsonify
-from .views.workout import workout_router
+from views.workout import workout_router
 from flask_cors import CORS
-from api.database import db
+from database import db
+import models
 import config
+from flask_migrate import Migrate
 
 def create_app():
 
@@ -16,9 +18,13 @@ def create_app():
     # DB設定を読み込む
     app.config.from_object('config.Config')
     db.init_app(app)
+    Migrate(app, db)
 
     app.register_blueprint(workout_router, url_prefix='/api')
 
     return app
 
 app = create_app()
+
+if __name__ == '__main__':
+    app.run()
