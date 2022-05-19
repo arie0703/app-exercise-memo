@@ -19,10 +19,9 @@ class Workout(db.Model):
     else:
       return workout_list
 
-  def registWorkout(workout):
+  def createWorkout(workout):
     record = Workout(
       name = workout['name'],
-
     )
 
     db.session.add(record)

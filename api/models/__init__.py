@@ -1,6 +1,6 @@
 from .workout import Workout, WorkoutSchema
-from .menu import Menu
-from .template import Template
+from .menu import Menu, MenuSchema
+from .template import Template, TemplateSchema
 
 __all__ = [
     Workout,

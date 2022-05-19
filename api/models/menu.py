@@ -11,4 +11,35 @@ class Menu(db.Model):
     workout_id = db.Column(db.Integer, db.ForeignKey("workouts.id", ondelete='CASCADE'), nullable=False)
     template_id = db.Column(db.Integer, db.ForeignKey("templates.id", ondelete='CASCADE'), nullable=False)
 
+    def __repr__(self):
+        return '<Menu %r>' % self.name
+
+    def getMenu():
+
+        menu_list = db.session.query(Menu).all()
+
+        if menu_list == None:
+            return []
+        else:
+            return menu_list
+
+    def createMenu(menu):
+        record = Menu(
+            reps = menu['reps'],
+            set_count = menu['set_count'],
+            weight = menu['weight'],
+            workout_id = menu['workout_id'],
+            template_id = menu['template_id'],
+        )
+
+        db.session.add(record)
+        db.session.commit()
+
+        return Menu
+
+class MenuSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Menu
+        fields = ('id', 'reps', 'set_count', 'weight', 'workout_id', 'template_id')
+
 

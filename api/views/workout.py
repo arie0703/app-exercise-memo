@@ -16,14 +16,14 @@ def getWorkoutList():
     'workouts': workout_schema.dump(workouts)
   }))
 
-@workout_router.route('/workouts', methods=['POST'])
-def registWorkout():
+@workout_router.route('/workouts/create', methods=['POST'])
+def createWorkout():
 
   # jsonデータを取得する
   jsonData = json.dumps(request.json)
   workoutData = json.loads(jsonData)
 
-  workout = Workout.registWorkout(workoutData)
+  workout = Workout.createWorkout(workoutData)
   workout_schema = WorkoutSchema(many=True)
 
   return make_response(jsonify({

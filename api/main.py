@@ -1,5 +1,7 @@
 from flask import Flask, make_response, jsonify
 from views.workout import workout_router
+from views.menu import menu_router
+from views.template import template_router
 from flask_cors import CORS
 from database import db
 import models
@@ -21,6 +23,8 @@ def create_app():
     Migrate(app, db)
 
     app.register_blueprint(workout_router, url_prefix='/api')
+    app.register_blueprint(template_router, url_prefix='/api')
+    app.register_blueprint(menu_router, url_prefix='/api')
 
     return app
 
