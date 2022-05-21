@@ -35,7 +35,7 @@ class Menu(db.Model):
         db.session.add(record)
         db.session.commit()
 
-        return Menu
+        return menu
 
 class MenuSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
