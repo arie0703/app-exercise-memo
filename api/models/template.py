@@ -26,8 +26,9 @@ class Template(db.Model):
 
         db.session.add(record)
         db.session.commit()
+        template["id"] = record.id
 
-        return Template
+        return template
 
 class TemplateSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
