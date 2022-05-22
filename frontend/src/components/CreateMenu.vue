@@ -1,131 +1,126 @@
 <template>
     <v-container>
-        <v-row>
-            <v-col cols="12">
-            </v-col>
-
-            <v-col class="mb-4">
-            <h1 class="display-2 font-weight-bold mb-3">
-                Workout MEMO
-            </h1>
-
-            <p class="subheading font-weight-regular">
-                ワークアウトメモです
-            </p>
-            </v-col>
-
-            <v-col
-            class="mb-5"
-            cols="12"
+        <v-col>
+            <v-dialog
+            v-model="dialog"
+            max-width="700px"
+            scrollable
             >
-            <h2 class="headline font-weight-bold mb-3">
-                種目
-            </h2>
-
-
-            <v-row v-for="(workout) in workouts" v-bind:key="workout.id">
-            {{workout.name}}
-            </v-row>
-            </v-col>
-
-            <v-col
-            class="mb-5"
-            cols="12"
-            >
-            <h2 class="headline font-weight-bold mb-3">
-                セットメニューを作成
-            </h2>
-            {{reps}}
-            {{menu_index}}
-            <v-btn
-            class="mx-2"
-            fab
-            dark
-            color="indigo"
-            @click="addMenu()"
-            >
-            <v-icon dark>
-                mdi-plus
-            </v-icon>
-            </v-btn>
-            <v-col>
-                <v-col cols="4" xs="12">
-                <v-text-field
-                    label="テンプレート名"
-                    v-model="template_title"
-                    outlined
-                ></v-text-field>
-                </v-col>
-                <v-row v-for="(_, i) in menu_index" v-bind:key="i" style="align-items: center">
-                    <v-col cols="4" xs="12" align-self="center">
-                    <v-select
-                        v-model="workout_info[i]"
-                        :items="workouts"
-                        item-text="name"
-                        label="種目"
-                        outlined
-                        return-object
-                        hide-details="auto"
-                    ></v-select>
-                    </v-col>
-                    <v-col cols="1" xs="12">
-                        <v-text-field
-                            type="number"
-                            v-model="reps[i]"
-                            label="回数"
-                            outlined
-                            hide-details="auto"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col cols="1" xs="12">
-                        <v-text-field
-                            type="number"
-                            v-model="weight[i]"
-                            label="重量"
-                            outlined
-                            hide-details="auto"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col cols="1" xs="12">
-                        <v-text-field
-                            type="number"
-                            v-model="set_count[i]"
-                            label="セット"
-                            outlined
-                            hide-details="auto"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col cols="1" xs="12">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                    color="indigo"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                    セットメニューを作成
+                    </v-btn>
+                </template>
+                <v-card>
+                    <v-card-title>
+                        メニューを作成
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-col cols="6" xs="12">
+                            <v-text-field
+                                label="タイトル"
+                                v-model="template_title"
+                                outlined
+                                hide-details="auto"
+                            ></v-text-field>
+                        </v-col>
                         <v-btn
                         class="mx-2"
-                        fab
                         dark
                         small
-                        color="primary"
-                        @click="deleteMenu(i)"
+                        color="indigo"
+                        @click="addMenu()"
                         >
-                        <v-icon dark>
-                            mdi-minus
-                        </v-icon>
+                            種目を追加
                         </v-btn>
-                    </v-col>
-                </v-row>
-                {{msg}}
-                <v-col cols="3" xs="12">
-                    <v-btn
-                        @click="createTemplate()"
-                    >
-                        Create
-                    </v-btn>
-                </v-col>
-            </v-col>
-            </v-col>
-        </v-row>
+                    </v-card-actions>
+                    <v-card-text style="height: 500px;">
+                        <v-col>
+                            <v-row v-for="(_, i) in menu_index" v-bind:key="i" style="align-items: center">
+                                <v-col cols="4" xs="12" align-self="center">
+                                <v-select
+                                    v-model="workout_info[i]"
+                                    :items="workouts"
+                                    item-text="name"
+                                    label="種目"
+                                    outlined
+                                    return-object
+                                    hide-details="auto"
+                                ></v-select>
+                                </v-col>
+                                <v-col cols="2" xs="12">
+                                    <v-text-field
+                                        type="number"
+                                        v-model="reps[i]"
+                                        label="回数"
+                                        outlined
+                                        hide-details="auto"
+                                    >
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="2" xs="12">
+                                    <v-text-field
+                                        type="number"
+                                        v-model="weight[i]"
+                                        label="重量"
+                                        outlined
+                                        hide-details="auto"
+                                    >
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="2" xs="12">
+                                    <v-text-field
+                                        type="number"
+                                        v-model="set_count[i]"
+                                        label="セット"
+                                        outlined
+                                        hide-details="auto"
+                                    >
+                                    </v-text-field>
+                                </v-col>
+                                <v-col cols="2" xs="12">
+                                    <v-btn
+                                    class="mx-2"
+                                    fab
+                                    dark
+                                    small
+                                    @click="deleteMenu(i)"
+                                    >
+                                    <v-icon dark>
+                                        mdi-minus
+                                    </v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                    </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        {{msg}}
+                        <v-col cols="3" xs="12">
+                            <v-btn
+                                @click="createTemplate()"
+                            >
+                                Create
+                            </v-btn>
+                        </v-col>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-col>
     </v-container>
 </template>
+
+<style scoped>
+
+
+</style>
 
 <script>
     import axios from 'axios'
