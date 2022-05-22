@@ -1,5 +1,4 @@
 from database import db, ma
-from .menu import Menu
 
 class Template(db.Model):
     __tablename__ = 'templates'
