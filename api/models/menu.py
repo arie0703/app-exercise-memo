@@ -1,5 +1,6 @@
 from database import db, ma
 from sqlalchemy import ForeignKey
+from .workout import Workout
 
 class Menu(db.Model):
     __tablename__ = 'menus'
@@ -23,6 +24,11 @@ class Menu(db.Model):
         else:
             return menu_list
 
+
+    def getSetMenu(template_id):
+        menus = db.session.query(Workout.name, Menu.weight, Menu.reps, Menu.set_count).join(Workout, Menu.workout_id == Workout.id).filter(Menu.template_id == template_id).all()
+        return menus
+
     def createMenu(menu):
         record = Menu(
             reps = menu['reps'],
@@ -40,6 +46,6 @@ class Menu(db.Model):
 class MenuSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Menu
-        fields = ('id', 'reps', 'set_count', 'weight', 'workout_id', 'template_id')
+        fields = ('id', 'reps', 'set_count', 'weight', 'workout_id', 'template_id', 'name')
 
 

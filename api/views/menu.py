@@ -16,6 +16,16 @@ def getMenu():
         'menus': menu_schema.dump(menus)
     }))
 
+@menu_router.route('/menus/template_id=<int:template_id>', methods=['GET'])
+def getSetMenu(template_id):
+    menus = Menu.getSetMenu(template_id)
+    menu_schema = MenuSchema(many=True)
+
+    return make_response(jsonify({
+        'code': 200,
+        'menus': menu_schema.dump(menus)
+    }))
+
 @menu_router.route('/menus/create', methods=['POST'])
 
 def createMenu():

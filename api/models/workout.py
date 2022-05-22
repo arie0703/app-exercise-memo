@@ -1,5 +1,4 @@
 from database import db, ma
-from .menu import Menu
 
 class Workout(db.Model):
   __tablename__ = 'workouts'

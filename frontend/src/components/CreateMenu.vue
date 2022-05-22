@@ -143,13 +143,6 @@
             .then(res =>
                 this.workouts = res.data.workouts
             );
-
-            axios.get('http://localhost:5000/api/templates')
-            .then(res => {
-                this.template_id = res.data.templates.length + 1
-                console.log(res)
-            }
-            );
         },
         methods: {
             addMenu () {

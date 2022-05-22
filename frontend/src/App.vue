@@ -24,18 +24,21 @@
 
     <v-main>
       <CreateMenu/>
+      <ShowMenus/>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import CreateMenu from './components/CreateMenu';
+import ShowMenus from './components/ShowMenus';
 
 export default {
   name: 'App',
 
   components: {
     CreateMenu,
+    ShowMenus,
   },
 
   data: () => ({
