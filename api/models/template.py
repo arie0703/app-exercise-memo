@@ -29,6 +29,11 @@ class Template(db.Model):
 
         return template
 
+    def deleteTemplate(id):
+        db.session.query(Template).filter(Template.id == id).delete()
+        db.session.commit()
+        return id
+
 class TemplateSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Template
