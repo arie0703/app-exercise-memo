@@ -31,3 +31,13 @@ def createTemplate():
         'code': 200,
         'template': template
     }))
+
+@template_router.route('/templates/delete/<int:id>', methods=['POST'])
+def deleteTemplate(id):
+
+    deleted_id = Template.deleteTemplate(id)
+
+    return make_response(jsonify({
+        'code': 200,
+        'id': deleted_id
+    }))
