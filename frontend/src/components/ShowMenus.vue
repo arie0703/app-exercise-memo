@@ -24,16 +24,23 @@ export default {
         templates: {},
         menus: {},
         formatted_text: "",
+        headers: {"x-hasura-admin-secret": process.env.VUE_APP_HASURA_SECRET},
     }),
     mounted () {
-        axios.get('http://localhost:5000/api/templates')
+        axios.get(process.env.VUE_APP_HASURA_ENDPOINT + 'templates',{headers: this.headers})
         .then(res =>
+        {
             this.templates = res.data.templates
+            console.log(this.templates)
+        }
         );
     },
     methods: {
         showMenus(template_id) {
-                axios.get('http://localhost:5000/api/menus/template_id=' + template_id)
+                axios.get(
+                    process.env.VUE_APP_HASURA_ENDPOINT + 'menus/template_id/' + template_id,
+                    {headers: this.headers}
+                    )
                 .then(res => {
                     this.menus = res.data.menus
                     this.formatText()
@@ -48,7 +55,7 @@ export default {
                 let reps = (menu.reps > 0) ? `${menu.reps} *` : ""
                 let set_count = (menu.set_count > 0) ? `${menu.set_count}sets` : ""
 
-                this.formatted_text += `- ${menu.name} \n`
+                this.formatted_text += `- ${menu.workout} \n`
 
                 if(weight + reps + set_count !== "") {
                     this.formatted_text += `\t- ${weight} ${reps} ${set_count}\n`
