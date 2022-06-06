@@ -1,11 +1,15 @@
 <template>
     <v-container>
         <v-row>
-            <v-col col="2" v-for="template in templates" v-bind:key="template.id">
-                <v-card class="pa-2" @click="showMenus(template.id)">
-                    {{template.title}}
-                </v-card>
-            </v-col>
+            <v-select
+                v-model="selected"
+                :items="templates"
+                item-text="title"
+                item-value="id"
+                label="Select Workout"
+                return-object
+                outlined
+            ></v-select>
         </v-row>
         <OutputText v-if="formatted_text" v-bind:formatted_text = formatted_text></OutputText>
         <v-col v-if="!formatted_text">
@@ -25,6 +29,7 @@ export default {
         menus: {},
         formatted_text: "",
         headers: {"x-hasura-admin-secret": process.env.VUE_APP_HASURA_SECRET},
+        selected: {},
     }),
     mounted () {
         axios.get(process.env.VUE_APP_HASURA_ENDPOINT + 'templates',{headers: this.headers})
@@ -34,6 +39,11 @@ export default {
             console.log(this.templates)
         }
         );
+    },
+    watch: {
+        'selected': function() {
+            this.showMenus(this.selected.id)
+        }
     },
     methods: {
         showMenus(template_id) {
