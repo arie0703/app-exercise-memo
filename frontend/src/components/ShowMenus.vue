@@ -1,19 +1,31 @@
 <template>
     <v-container>
-        <v-row>
+        <v-col cols="4">
             <v-select
                 v-model="selected"
                 :items="templates"
+                v-if="Object.keys(templates).length"
                 item-text="title"
                 item-value="id"
                 label="Select Workout"
+                color="indigo"
                 return-object
                 outlined
             ></v-select>
-        </v-row>
+            <v-progress-circular
+                indeterminate
+                color="indigo"
+                v-if="!Object.keys(templates).length"
+            ></v-progress-circular>
+        </v-col>
+        <v-progress-circular
+            indeterminate
+            color="indigo"
+            v-if="isLoading"
+        ></v-progress-circular>
         <OutputText v-if="formatted_text" v-bind:formatted_text = formatted_text></OutputText>
         <v-col v-if="!formatted_text">
-            Click Workout Menu!
+            Select Workout Menu!
         </v-col>
     </v-container>
 </template>
@@ -30,6 +42,7 @@ export default {
         formatted_text: "",
         headers: {"x-hasura-admin-secret": process.env.VUE_APP_HASURA_SECRET},
         selected: {},
+        isLoading: false,
     }),
     mounted () {
         axios.get(process.env.VUE_APP_HASURA_ENDPOINT + 'templates',{headers: this.headers})
@@ -47,6 +60,7 @@ export default {
     },
     methods: {
         showMenus(template_id) {
+                this.isLoading = true;
                 axios.get(
                     process.env.VUE_APP_HASURA_ENDPOINT + 'menus/template_id/' + template_id,
                     {headers: this.headers}
@@ -54,6 +68,7 @@ export default {
                 .then(res => {
                     this.menus = res.data.menus
                     this.formatText()
+                    this.isLoading = false;
                 }
             );
         },
@@ -61,14 +76,14 @@ export default {
         formatText() {
             this.formatted_text = "";
             for (let menu of this.menus) {
-                let weight = (menu.weight > 0) ? `${menu.weight} kg *` : ""
-                let reps = (menu.reps > 0) ? `${menu.reps} *` : ""
-                let set_count = (menu.set_count > 0) ? `${menu.set_count}sets` : ""
+                let weight = (menu.weight > 0) ? `${menu.weight} kg * ` : ""
+                let reps = (menu.reps > 0) ? `${menu.reps} * ` : ""
+                let set_count = (menu.set_count > 0) ? `${menu.set_count}sets ` : ""
 
                 this.formatted_text += `- ${menu.workout} \n`
 
                 if(weight + reps + set_count !== "") {
-                    this.formatted_text += `\t- ${weight} ${reps} ${set_count}\n`
+                    this.formatted_text += `\t- ${weight}${reps}${set_count}\n`
                 }
             }
         }
